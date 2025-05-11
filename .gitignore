@@ -1,6 +1,9 @@
+# IntelliJ IDEA metadata
 .idea/
+
+# Gradle cache
 .gradle/
 
-# Duplicate gradle wrapper
+# Duplicate gradle wrappers
 /*/gradle/wrapper/
 /*/gradlew*
