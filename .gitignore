@@ -4,6 +4,12 @@
 # Gradle cache
 .gradle/
 
+# Build artifacts
+build/
+
 # Duplicate gradle wrappers
 /*/gradle/wrapper/
 /*/gradlew*
+
+# Kotlin runtime sessions
+.kotlin/sessions/
