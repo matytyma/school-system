@@ -1,7 +1,7 @@
 package dev.matytyma.crypto.util
 
 @OptIn(ExperimentalUnsignedTypes::class)
-fun UInt.toLittleEndian() = ubyteArrayOf(
+fun UInt.toBytesLE() = ubyteArrayOf(
     this.toUByte(),
     (this shr 8).toUByte(),
     (this shr 16).toUByte(),
@@ -9,10 +9,10 @@ fun UInt.toLittleEndian() = ubyteArrayOf(
 )
 
 @OptIn(ExperimentalUnsignedTypes::class)
-fun Int.toLittleEndian() = this.toUInt().toLittleEndian()
+fun Int.toBytesLE() = toUInt().toBytesLE()
 
 @OptIn(ExperimentalUnsignedTypes::class)
-fun ULong.toLittleEndian() = ubyteArrayOf(
+fun ULong.toBytesLE() = ubyteArrayOf(
     this.toUByte(),
     (this shr 8).toUByte(),
     (this shr 16).toUByte(),
@@ -24,4 +24,14 @@ fun ULong.toLittleEndian() = ubyteArrayOf(
 )
 
 @OptIn(ExperimentalUnsignedTypes::class)
-fun Long.toLittleEndian() = this.toULong().toLittleEndian()
+fun Long.toBytesLE() = toULong().toBytesLE()
+
+@OptIn(ExperimentalUnsignedTypes::class)
+fun List<UByte>.fromBytesLE() = (this[7].toULong() shl 56) +
+        (this[6].toULong() shl 48) +
+        (this[5].toULong() shl 40) +
+        (this[4].toULong() shl 32) +
+        (this[3].toULong() shl 24) +
+        (this[2].toULong() shl 16) +
+        (this[1].toULong() shl 8) +
+        this[0].toULong()
