@@ -1,6 +1,5 @@
 package dev.matytyma.crypto.hash
 
-import dev.matytyma.crypto.util.fromBytesLE
 import dev.matytyma.crypto.util.toBytesLE
 import java.math.BigInteger
 
@@ -74,11 +73,22 @@ class Blake2b() {
         require(key.size <= 64) { "Key must be at most 64 bytes" }
         require(hashLength in 1..64) { "Hash length must be in range 1..64" }
 
-        val data = ubyteArrayOf(
+        val rawData = ubyteArrayOf(
             *key, *UByteArray((128 - key.size % 128) % 128),
             *message, *UByteArray((128 - message.size % 128) % 128),
-        ).chunked(128).map { block ->
-            block.chunked(8).map { it.fromBytesLE() }.toULongArray()
+        )
+
+        val data = List(rawData.size / 128) { i ->
+            ULongArray(16) { j ->
+                (rawData[i * 128 + j * 8 + 7].toULong() shl 56) +
+                        (rawData[i * 128 + j * 8 + 6].toULong() shl 48) +
+                        (rawData[i * 128 + j * 8 + 5].toULong() shl 40) +
+                        (rawData[i * 128 + j * 8 + 4].toULong() shl 32) +
+                        (rawData[i * 128 + j * 8 + 3].toULong() shl 24) +
+                        (rawData[i * 128 + j * 8 + 2].toULong() shl 16) +
+                        (rawData[i * 128 + j * 8 + 1].toULong() shl 8) +
+                        rawData[i * 128 + j * 8 + 0].toULong()
+            }
         }
 
         val hash = ulongArrayOf(*IV)

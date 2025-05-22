@@ -22,16 +22,3 @@ fun ULong.toBytesLE() = ubyteArrayOf(
     (this shr 48).toUByte(),
     (this shr 56).toUByte(),
 )
-
-@OptIn(ExperimentalUnsignedTypes::class)
-fun Long.toBytesLE() = toULong().toBytesLE()
-
-@OptIn(ExperimentalUnsignedTypes::class)
-fun List<UByte>.fromBytesLE() = (this[7].toULong() shl 56) +
-        (this[6].toULong() shl 48) +
-        (this[5].toULong() shl 40) +
-        (this[4].toULong() shl 32) +
-        (this[3].toULong() shl 24) +
-        (this[2].toULong() shl 16) +
-        (this[1].toULong() shl 8) +
-        this[0].toULong()
