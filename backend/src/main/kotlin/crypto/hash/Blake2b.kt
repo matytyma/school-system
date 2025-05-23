@@ -1,8 +1,5 @@
 package dev.matytyma.crypto.hash
 
-import dev.matytyma.crypto.util.toBytesLE
-import java.math.BigInteger
-
 @OptIn(ExperimentalUnsignedTypes::class)
 class Blake2b() {
     companion object {
@@ -41,12 +38,13 @@ class Blake2b() {
 
     private fun ULongArray.compress(
         block: ULongArray,
-        messageByteOffset: BigInteger,
+        offsetLow: ULong,
+        offsetHigh: ULong,
         invert: Boolean,
     ): ULongArray = apply {
         val work = ulongArrayOf(*this, *IV)
-        work[12] = work[12] xor (messageByteOffset and BigInteger(ULong.MAX_VALUE.toString())).toLong().toULong()
-        work[13] = work[13] xor (messageByteOffset shr 64).toLong().toULong()
+        work[12] = work[12] xor offsetLow
+        work[13] = work[13] xor offsetHigh
         if (invert) work[14] = work[14].inv()
 
         for (i in 0..<COMPRESSION_ROUNDS) {
@@ -95,15 +93,22 @@ class Blake2b() {
         hash[0] = hash[0] xor 0x01010000UL xor (key.size shl 8).toULong() xor hashLength.toULong()
 
         for (i in 0..(data.size - 2)) {
-            hash.compress(data[i], (i + 1).toBigInteger() * data.size.toBigInteger(), false)
+            hash.compress(data[i], (i.toULong() + 1UL) shl 7, i.toULong() shr 57, false)
         }
 
         if (key.isEmpty()) {
-            hash.compress(data.last(), message.size.toBigInteger(), true)
+            hash.compress(data.last(), message.size.toULong(), 0UL, true)
         } else {
-            hash.compress(data.last(), (message.size + 128).toBigInteger(), true)
+            hash.compress(data.last(), message.size.toULong() + 128UL, 0UL, true)
+        }
+        val finalHash = UByteArray(hash.size * 8)
+        for (i in 0..hash.lastIndex) {
+            val block = hash[i]
+            for (j in 0..7) {
+                finalHash[i * 8 + j] = (block shr (j * 8)).toUByte()
+            }
         }
 
-        return hash.flatMap { it.toBytesLE() }.toUByteArray()
+        return finalHash
     }
 }
