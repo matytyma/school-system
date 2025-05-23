@@ -25,7 +25,7 @@ class Blake2b() {
         )
     }
 
-    private fun ULongArray.mix(a: Int, b: Int, c: Int, d: Int, x: ULong, y: ULong): ULongArray = apply {
+    private fun ULongArray.mix(a: Int, b: Int, c: Int, d: Int, x: ULong, y: ULong): ULongArray {
         this[a] = this[a] + this[b] + x
         this[d] = (this[d] xor this[a]).rotateRight(rotationConstants[0])
         this[c] = this[c] + this[d]
@@ -34,6 +34,8 @@ class Blake2b() {
         this[d] = (this[d] xor this[a]).rotateRight(rotationConstants[2])
         this[c] = this[c] + this[d]
         this[b] = (this[b] xor this[c]).rotateRight(rotationConstants[3])
+
+        return this
     }
 
     private fun ULongArray.compress(
@@ -41,7 +43,7 @@ class Blake2b() {
         offsetLow: ULong,
         offsetHigh: ULong,
         invert: Boolean,
-    ): ULongArray = apply {
+    ): ULongArray {
         val work = ulongArrayOf(*this, *IV)
         work[12] = work[12] xor offsetLow
         work[13] = work[13] xor offsetHigh
@@ -61,6 +63,8 @@ class Blake2b() {
         for (i in 0..7) {
             this[i] = this[i] xor work[i] xor work[i + 8]
         }
+
+        return this
     }
 
     fun hash(
