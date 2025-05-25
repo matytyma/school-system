@@ -9,10 +9,10 @@ object GradeColumns : Table("grade_column") {
     val classroom = reference("classroom", Classrooms.id).nullable()
     val group = reference("group", Groups.id).nullable()
     val index = integer("index")
-    val name = varchar("name")
+    val name = varchar("name", 50)
     val weight = integer("weight")
     val assignmentDate = date("assignment_date")
-    val description = varchar("description").nullable()
+    val description = varchar("description", 200).nullable()
 
     override val primaryKey = PrimaryKey(id)
 
