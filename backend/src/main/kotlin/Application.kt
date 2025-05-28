@@ -7,4 +7,5 @@ fun main(args: Array<String>) = EngineMain.main(args)
 
 fun Application.module() {
     configureHTTP()
+    registerRoutes()
 }
