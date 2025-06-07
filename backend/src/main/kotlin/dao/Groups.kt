@@ -1,10 +1,10 @@
-package dev.matytyma.schema
+package dev.matytyma.dao
 
 import org.jetbrains.exposed.sql.Table
 
-object Students : Table("student") {
+object Groups : Table("student_group") {
     val id = integer("id").autoIncrement()
-    val classroom = reference("classroom", Classrooms.id)
+    val name = varchar("name", 50)
 
     override val primaryKey = PrimaryKey(id)
 }

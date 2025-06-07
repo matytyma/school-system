@@ -1,4 +1,4 @@
-package dev.matytyma.schema
+package dev.matytyma.dao
 
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.kotlin.datetime.date

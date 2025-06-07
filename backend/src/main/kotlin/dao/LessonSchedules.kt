@@ -1,4 +1,4 @@
-package dev.matytyma.schema
+package dev.matytyma.dao
 
 import dev.matytyma.model.Day
 import dev.matytyma.model.SchedulePattern

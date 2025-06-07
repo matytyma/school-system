@@ -1,4 +1,4 @@
-package dev.matytyma.schema
+package dev.matytyma.dao
 
 import dev.matytyma.model.AbsenceType
 import org.jetbrains.exposed.sql.Table
