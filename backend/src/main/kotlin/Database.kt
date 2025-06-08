@@ -4,6 +4,7 @@ import dev.matytyma.dao.*
 import io.ktor.server.application.*
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
 
 fun Application.setupDatabase() {
@@ -25,5 +26,11 @@ fun Application.setupDatabase() {
             Students,
             Teachers,
         )
+
+        Teachers.insert {
+            it[firstName] = "John"
+            it[lastName] = "Doe"
+            it[shortName] = "JD"
+        }
     }
 }
