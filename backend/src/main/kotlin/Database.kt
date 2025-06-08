@@ -31,6 +31,7 @@ fun Application.setupDatabase() {
             it[firstName] = "John"
             it[lastName] = "Doe"
             it[shortName] = "JD"
+            it[prefixTitle] = "M.Eng."
         }
     }
 }
