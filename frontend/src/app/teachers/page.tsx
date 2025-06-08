@@ -1,5 +1,4 @@
 export default async function Teachers() {
-  console.log(await fetch("http://localhost:3000/api/teacher/list").then(it => it.text()));
   const teachers: {
     id: number,
     firstName: string,
